@@ -20,6 +20,7 @@ Learn about `enter`, `update`, `exit`, and `key` (fundamental aspects of D3) by 
 
   - [ ] [General Update Patterns I](http://bl.ocks.org/3808218)
   - [ ] [General Update Patterns II](http://bl.ocks.org/3808221)
+  - [ ] [General Update Patterns III](http://bl.ocks.org/mbostock/3808234)
   
 Skim through the official [D3 API Reference](https://github.com/mbostock/d3/wiki/API-Reference). You'll need to reference it heavily as you work through this sprint. It is good practice to always have the documentation of your framework readily accessible.
 
