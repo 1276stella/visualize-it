@@ -1,2 +1,26 @@
 /* your beautiful css styling goes here! */
 
+
+
+.axis {
+  font: 12px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.title {
+  margin-top: 50px;
+  font: 24px sans-serif;
+  /*position: absolute;*/
+  text-align: center;
+}
+
+svg {
+  display: block;
+  margin:auto;
+}
