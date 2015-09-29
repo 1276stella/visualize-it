@@ -146,18 +146,7 @@ pie_chart.append("text")
       .style("text-anchor", "middle")
       .text(function(d) { if (d.value > 3) {return d.data.country; }});
 
-
-
 });
-
-
-
-
-
-
-
-
-
 
 
 
