@@ -2,6 +2,7 @@
 var data = dataSet;
 var usPopulationData = data.usPopulation.data;
 
+
 //var dates = usPopulationData.map(function(d) {return d[0];});
 var pop = usPopulationData.map(function(d) {return d[1];});
 //your code here
@@ -11,6 +12,7 @@ var h = 500 - (margin*2);
 
 var svg = d3.select(".graph")
             .append("svg")
+            .attr('class','line-chart')
             .attr("width", w)
             .attr("height", h)
             .style('padding','60px')
@@ -21,16 +23,11 @@ var svg = d3.select(".graph")
 var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 usPopulationData.forEach(function(d,i){
-  // if (i===0) {console.log(typeof d[0]);}
   d[0] = parseDate(d[0]);
 });
 
-// why doesn't this work????
-// dates.forEach(function(d,i){
-//   if (i===0){console.log(typeof d)}
-//   d = parseDate(d);
-// })
-
+// sort data in ascending year order
+usPopulationData = usPopulationData.sort(function(a, b) { return a[0]-b[0]; })
 
 var x = d3.scale.ordinal().rangeRoundBands([0, w], .05, .5);
 var y = d3.scale.linear().range([h, 0]);
@@ -78,3 +75,105 @@ svg.selectAll("rect")
    .attr("y",function(d) { return y(d[1]); })
    .attr("width", x.rangeBand())
    .attr("height", function(d) { return h - y(d[1]) });
+
+/// start pie chart graph
+
+var margin = 10;
+var w = 1000 - (margin*2);
+var h = 500 - (margin*2);
+var radius = Math.min(w, h) / 2;
+
+var colors = d3.scale.category20();
+
+var arc = d3.svg.arc()
+            .outerRadius(radius - 10)
+            .innerRadius(100);
+
+var pie = d3.layout.pie()
+            .sort(null)
+            .value(function(d){ return d.immigration_perc; });
+
+var svg = d3.select(".graph")
+            .append("svg")
+            .attr("width", w)
+            .attr("height", h)
+            .attr('class','pie-chart')
+            .style('padding','60px')
+            .append('g')
+            .attr('class','container')
+            .attr('transform','translate('+ w/2 +',' + h/2 + ')');
+
+d3.csv("immigration.csv", function(error, data) {
+//Total,41347945,100.0
+
+  data.forEach(function(d) {
+    d.country = d.Country;
+    d.immigration_num = +d.Estimate;
+    d.immigration_perc = +d.Percent;
+  });
+
+var pie_chart = svg.selectAll(".arc")
+                   .data(pie(data))
+                   .enter()
+                   .append('g')
+                   .attr('class','arc');
+
+pie_chart.append('path')
+         .attr('d',arc)
+         .style('fill',function(d,i){ return colors(i); });
+
+pie_chart.append("text")
+      .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+      .attr("dy", ".35em")
+      .style("text-anchor", "middle")
+      .text(function(d) { if (d.value > 3) {return d.data.country; }});
+
+console.log(pie(data));
+// console.log(data)
+  // g.append("path")
+  //     .attr("d", arc)
+  //     .style("fill", function(d) { return color(d.data.age); });
+
+  // g.append("text")
+  //     .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
+  //     .attr("dy", ".35em")
+  //     .style("text-anchor", "middle")
+  //     .text(function(d) { return d.data.age; });
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
