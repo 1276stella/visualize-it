@@ -1,8 +1,6 @@
 /* your beautiful css styling goes here! */
 
-
-
-.axis {
+body{
   font: 12px sans-serif;
 }
 
@@ -25,6 +23,31 @@ svg {
   margin:auto;
 }
 
-.arc {
-  font: 12px sans-serif;
+.d3-tip {
+  padding: 12px;
+  background: rgba(189,187,187,.9);
+  opacity: .1;
+  color: #fff;
+  border-radius: 2px;
+  line-height: 20px;
+}
+
+.arc path:hover {
+  stroke: #fff;
+  stroke-width: 3px;
+}
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 3.5;
+  color: rgba(189, 187, 187, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+span {
+  color: #454444;
 }

@@ -93,6 +93,11 @@ var pie = d3.layout.pie()
             .sort(null)
             .value(function(d){ return d.immigration_perc; });
 
+var title = d3.select('.graph')
+              .append('div')
+              .attr('class','title')
+              .text('Estimated Immigration to the US in 2013');
+
 var svg = d3.select(".graph")
             .append("svg")
             .attr("width", w)
@@ -112,15 +117,28 @@ d3.csv("immigration.csv", function(error, data) {
     d.immigration_perc = +d.Percent;
   });
 
+
+var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([0, -50])
+            .html(function(d) {
+              return '<div><span>Region: </span>' + d.data.country + '</div>' +
+                     '<div><span>Thousands of immigrants: </span>' + d3.format("0,000")(d.data.immigration_num) + '</div>' + 
+                     '<div><span>Percent of total: </span>' + d.data.immigration_perc + '%</div>';
+            });
+
 var pie_chart = svg.selectAll(".arc")
                    .data(pie(data))
                    .enter()
                    .append('g')
                    .attr('class','arc');
+pie_chart.call(tip);
 
 pie_chart.append('path')
          .attr('d',arc)
-         .style('fill',function(d,i){ return colors(i); });
+         .style('fill',function(d,i){ return colors(i); })
+         .on('mouseover',tip.show)
+          .on('mouseout', tip.hide);
 
 pie_chart.append("text")
       .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
@@ -128,17 +146,7 @@ pie_chart.append("text")
       .style("text-anchor", "middle")
       .text(function(d) { if (d.value > 3) {return d.data.country; }});
 
-console.log(pie(data));
-// console.log(data)
-  // g.append("path")
-  //     .attr("d", arc)
-  //     .style("fill", function(d) { return color(d.data.age); });
 
-  // g.append("text")
-  //     .attr("transform", function(d) { return "translate(" + arc.centroid(d) + ")"; })
-  //     .attr("dy", ".35em")
-  //     .style("text-anchor", "middle")
-  //     .text(function(d) { return d.data.age; });
 
 });
 
