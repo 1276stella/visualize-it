@@ -65,7 +65,7 @@ svg.append("g")
     .attr("y", 6)
     .attr("dy", ".71em")
     .style("text-anchor", "end")
-    .text("Number of Tonadoes");
+    .text("Number of Tornadoes");
 
 
 var bars = svg.selectAll("rect")
@@ -76,6 +76,8 @@ var bars = svg.selectAll("rect")
 
 function position(bars) {
    bars.attr("x",function(d, i){ return x(xlabel[i]); })
+   .transition()
+   .duration(50)
    .attr("y",function(d) { return y(d); })
    .attr("width", x.rangeBand())
    .attr("height", function(d) { return h - y(d) });
@@ -90,7 +92,9 @@ var label = svg.append("text")
 
   svg.transition()
       .duration(30000)
+      .delay(1000)
       .ease("linear")
+      .tween('year', tweenYear)
       .each("end", enableInteraction);
 
 var box = label.node().getBBox();
@@ -103,6 +107,10 @@ var overlay = svg.append("rect")
         .attr("height", box.height)
         .on("mouseover", enableInteraction);
 
+function tweenYear() {
+  var year = d3.interpolateNumber(1950, 1994);
+  return function(t) {displayYear(year(t));};
+};
   // After the transition finishes, you can mouseover to change the year.
 function enableInteraction() {
     var yearScale = d3.scale.linear()
@@ -136,5 +144,4 @@ function displayYear(year) {
     bars.data(dataObj[Math.round(year)]).call(position);
     label.text(Math.round(year));
   }
-
 
